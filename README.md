@@ -24,10 +24,10 @@
 - 方式一：双击 `启动高级修复工具.bat`（推荐，中文提示）。
 - 方式二：以管理员权限打开 PowerShell，执行：
   - 交互式：`./Fix-SMBAccess-Advanced.ps1`
-  - 指定参数：`./Fix-SMBAccess-Advanced.ps1 -TargetIP "192.168.31.119" -Username "用户名" -Password "密码"`
+  - 指定参数：`./Fix-SMBAccess-Advanced.ps1 -TargetIP "192.168.1.100" -Username "用户名" -Password "密码"`
 
 ## 参数说明
-- `-TargetIP`：目标共享设备的 IP 地址（如 `192.168.31.119`）。
+- `-TargetIP`：目标共享设备的 IP 地址（如 `192.168.1.100`）。
 - `-Username`：用于访问共享的用户名（本地账户或 `域\用户名`）。
 - `-Password`：该用户的密码。
 - `-AutoFix`：存在时按提供参数自动执行（可选）。
@@ -36,27 +36,27 @@
 - 交互式修复（用户逐步确认）：
   - `./Fix-SMBAccess-Advanced.ps1`
 - 指定本地用户：
-  - `./Fix-SMBAccess-Advanced.ps1 -TargetIP "192.168.31.119" -Username "admin" -Password "P@ssw0rd"`
+  - `./Fix-SMBAccess-Advanced.ps1 -TargetIP "192.168.1.100" -Username "admin" -Password "P@ssw0rd"`
 - 指定域用户：
-  - `./Fix-SMBAccess-Advanced.ps1 -TargetIP "192.168.31.119" -Username "MYDOMAIN\user" -Password "secret"`
+  - `./Fix-SMBAccess-Advanced.ps1 -TargetIP "192.168.1.100" -Username "MYDOMAIN\user" -Password "secret"`
 
 ## 修复后如何重新连接共享
 - 删除旧映射并重建：
   - `net use * /delete /y`
-  - `net use \\192.168.31.119\共享名 /user:用户名 密码`
-- 或在资源管理器地址栏输入：`\\192.168.31.119` 按回车后选择共享。
+  - `net use \\192.168.1.100\共享名 /user:用户名 密码`
+- 或在资源管理器地址栏输入：`\\192.168.1.100` 按回车后选择共享。
 
 ## 日志位置
 - 默认日志：`%TEMP%\SMB-Advanced-Fix-Log.txt`。
 - 排查问题时可附上该日志内容。
 
 ## 故障排查（0x80004005 等）
-- 检查端口 445：`Test-NetConnection 192.168.31.119 -Port 445`
+- 检查端口 445：`Test-NetConnection 192.168.1.100 -Port 445`
 - 清除错误凭据：
   - `net use * /delete /y`
   - 打开“凭据管理器”删除相关网络凭据（或脚本自动处理）。
 - 再次添加正确凭据：
-  - `net use \\192.168.31.119\共享名 /user:用户名 密码`
+  - `net use \\192.168.1.100\共享名 /user:用户名 密码`
 - 若设备较旧（NAS/路由器），可能需要 SMB1 兼容；脚本会尽量启用，但某些版本/版本策略可能不支持。
 
 ## 注意事项（安全与兼容）
